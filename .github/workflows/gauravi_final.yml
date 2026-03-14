@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout code
@@ -26,16 +26,26 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential git ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev libncurses-dev libreadline-dev libgdbm-dev libdb-dev libsqlite3-dev tk-dev libffi-dev libssl-dev autoconf automake libtool pkg-config cmake
+          sudo apt-get install -y \
+            build-essential git ffmpeg libsdl2-dev libsdl2-image-dev \
+            libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev \
+            libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev \
+            libncurses5-dev libncursesw5-dev libreadline-dev \
+            libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev \
+            tk-dev libffi-dev python3-dev libtool automake autoconf \
+            pkg-config cmake
 
-      - name: Install Buildozer
+      - name: Install Buildozer and Cython
         run: |
           pip install --upgrade pip
           pip install buildozer cython==0.29.33
 
-      - name: Build with Buildozer
+      - name: Final Build with Auto-Accept
         run: |
-          # यह कमांड ऑटोमैटिक लाइसेंस एक्सेप्ट करेगी और बिल्ड शुरू करेगी
+          # यह हिस्सा 'Aidl not found' को रोकने के लिए Android SDK सेट करेगा
+          mkdir -p ~/.android
+          touch ~/.android/repositories.cfg
+          # 'yes' कमांड आपके बदले 'y' टाइप करेगी ताकि Broken Pipe न आए
           yes | buildozer android debug
         env:
           ACCEPT_SDK_LICENSE: "True"
@@ -43,5 +53,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Gauravi-App
+          name: Gauravi-App-Final
           path: bin/*.apk
