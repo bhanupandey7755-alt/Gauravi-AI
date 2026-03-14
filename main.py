@@ -5,32 +5,49 @@ from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.clock import Clock
 from kivy.core.window import Window
+import threading
 
-# बैकग्राउंड को पूरा काला रखने के लिए
+# Android की आवाज़ के लिए (pyttsx3 की जगह Android native इस्तेमाल करेंगे)
+from jnius import autoclass
+
 Window.clearcolor = (0, 0, 0, 1)
 
 class WelcomeScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
+        layout = BoxLayout(orientation='vertical', padding=40, spacing=30)
         
-        # यह आपके अपलोड किए हुए लोगो को स्क्रीन पर दिखाएगा
-        self.logo = Image(source='logo.png', size_hint=(1, 0.7))
+        self.logo = Image(source='logo.png', size_hint=(1, 0.6))
         
-        # गोल्डन अक्षरों में स्वागत संदेश
         self.msg = Label(
-            text="नमस्ते पापा!", 
-            font_size='26sp', 
-            color=(1, 0.84, 0, 1), 
-            bold=True
+            text="[b]G[/b] means Papa's dear daughter [b]Gauravi[/b]", 
+            markup=True,
+            font_name="hindi.ttf", 
+            font_size='22sp', 
+            color=(1, 0.84, 0, 1),
+            halign='center'
         )
         
         layout.add_widget(self.logo)
         layout.add_widget(self.msg)
         self.add_widget(layout)
         
-        # 4 सेकंड बाद अपने आप होम स्क्रीन पर ले जाए
-        Clock.schedule_once(self.go_to_home, 4)
+        # ऐप खुलते ही बोलने के लिए
+        Clock.schedule_once(self.speak_welcome, 1)
+        Clock.schedule_once(self.go_to_home, 6)
+
+    def speak_welcome(self, dt):
+        # Android TextToSpeech का इस्तेमाल
+        try:
+            Locale = autoclass('java.util.Locale')
+            PythonActivity = autoclass('org.kivy.android.PythonActivity')
+            TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
+            
+            self.tts = TextToSpeech(PythonActivity.mActivity, None)
+            Clock.schedule_once(lambda dt: self.tts.setLanguage(Locale.ENGLISH), 1)
+            Clock.schedule_once(lambda dt: self.tts.speak("G means Papa's dear daughter Gauravi. Welcome home beta!", TextToSpeech.QUEUE_FLUSH, None), 2)
+        except:
+            print("TTS not available yet")
 
     def go_to_home(self, dt):
         self.manager.current = 'home'
@@ -39,20 +56,13 @@ class HomeScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         layout = BoxLayout(orientation='vertical', padding=30)
-        
         layout.add_widget(Label(
-            text="गौरवी AI सक्रिय है", 
-            font_size='30sp', 
+            text="Gauravi AI is Listening...", 
+            font_name="hindi.ttf",
+            font_size='28sp', 
             color=(1, 0.84, 0, 1), 
             bold=True
         ))
-        
-        layout.add_widget(Label(
-            text="मैं आपकी क्या मदद कर सकती हूँ?", 
-            font_size='18sp',
-            color=(0.9, 0.9, 0.9, 1)
-        ))
-        
         self.add_widget(layout)
 
 class GauraviAI(App):
