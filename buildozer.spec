@@ -6,10 +6,16 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 1.0
 
-# यह सबसे जरूरी लाइन है जो आपके स्क्रीनशॉट में नहीं थी
+# ऐप का आइकॉन (Logo) सेट करने के लिए
+icon.filename = %(source.dir)s/logo.png
+
+# ऐप खुलते समय दिखने वाली फोटो
+presplash.filename = %(source.dir)s/logo.png
+
+# ज़रूरी लाइब्रेरीज़
 requirements = python3, kivy
 
-# कॉल, मैसेज और फोन कंट्रोल की ताकत
+# परमिशन
 android.permissions = INTERNET, CALL_PHONE, READ_CONTACTS, RECORD_AUDIO
 
 orientation = portrait
