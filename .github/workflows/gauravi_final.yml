@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-python-version: '3.10'
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
@@ -36,10 +36,8 @@ jobs:
             libavformat-dev \
             libavcodec-dev \
             zlib1g-dev \
-            libncurses5-dev \
-            libncursesw5-dev \
+            libncurses-dev \
             libreadline-dev \
-            libtk8.6-dev \
             libgdbm-dev \
             libdb-dev \
             libsqlite3-dev \
@@ -60,6 +58,6 @@ jobs:
 
       - name: Build with Buildozer
         run: |
-          # यह कमांड आपके ऐप की APK बनाना शुरू करेगा
-          # ध्यान रहे कि आपकी repository में buildozer.spec फाइल होनी चाहिए
+          # यह कमांड आपकी APK बनाना शुरू करेगा
+          # सुनिश्चित करें कि आपके पास repository में buildozer.spec फाइल है
           buildozer android debug
