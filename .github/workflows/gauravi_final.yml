@@ -59,6 +59,7 @@ jobs:
 
       - name: Build with Buildozer
         run: |
-          # Android SDK और Licenses को अपने आप स्वीकार करने के लिए
-          yes | buildozer android debug
-          
+          # लाइसेंस को सुरक्षित तरीके से स्वीकार करने के लिए
+          mkdir -p ~/.android
+          touch ~/.android/repositories.cfg
+          buildozer android debug || buildozer android debug
