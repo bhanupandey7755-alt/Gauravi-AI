@@ -1,0 +1,19 @@
+name: Build Gauravi APK
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Build with Buildozer
+        uses: Akuli/buildozer-action@v1
+        with:
+          buildozer_version: stable
