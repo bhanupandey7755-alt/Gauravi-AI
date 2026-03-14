@@ -5,9 +5,9 @@ from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.clock import Clock
 from kivy.core.window import Window
-from jnius import autoclass, cast
+from jnius import autoclass
 
-# Background color Black
+# बैकग्राउंड पूरी तरह काला
 Window.clearcolor = (0, 0, 0, 1)
 
 class WelcomeScreen(Screen):
@@ -31,7 +31,7 @@ class WelcomeScreen(Screen):
         layout.add_widget(self.msg)
         self.add_widget(layout)
         
-        # आवाज़ और स्क्रीन बदलने का समय
+        # आवाज़ शुरू करने और स्क्रीन बदलने का समय
         Clock.schedule_once(self.speak_welcome, 1)
         Clock.schedule_once(self.go_to_home, 5)
 
@@ -45,7 +45,7 @@ class WelcomeScreen(Screen):
             Clock.schedule_once(lambda dt: self.tts.setLanguage(Locale.ENGLISH), 1)
             Clock.schedule_once(lambda dt: self.tts.speak(self.display_text, TextToSpeech.QUEUE_FLUSH, None), 2)
         except:
-            print("TTS Error")
+            pass
 
     def go_to_home(self, dt):
         self.manager.current = 'home'
@@ -59,14 +59,15 @@ class HomeScreen(Screen):
             text="Gauravi AI is Listening...", 
             font_name="hindi.ttf",
             font_size='28sp', 
-            color=(1, 0.84, 0, 1)
+            color=(1, 0.84, 0, 1),
+            bold=True
         )
         
         self.layout.add_widget(self.status_label)
         self.add_widget(self.layout)
 
     def on_enter(self):
-        # होम स्क्रीन पर आते ही सुनना शुरू करें
+        # होम स्क्रीन पर आते ही माइक्रोफोन सक्रिय करें
         Clock.schedule_once(self.start_listening, 1)
 
     def start_listening(self, dt):
@@ -78,7 +79,6 @@ class HomeScreen(Screen):
             intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US")
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Say something...")
             
             PythonActivity.mActivity.startActivityForResult(intent, 1)
         except:
