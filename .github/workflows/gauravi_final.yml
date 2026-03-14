@@ -48,7 +48,9 @@ jobs:
             automake \
             libtool \
             pkg-config \
-            cmake
+            cmake \
+            openjdk-17-jdk \
+            aidle
 
       - name: Install Buildozer
         run: |
@@ -58,6 +60,5 @@ jobs:
 
       - name: Build with Buildozer
         run: |
-          # यह कमांड आपकी APK बनाना शुरू करेगा
-          # सुनिश्चित करें कि आपके पास repository में buildozer.spec फाइल है
-          buildozer android debug
+          # Android SDK के लाइसेंस को ऑटो-एक्सेप्ट करने के लिए
+          yes | buildozer android debug
