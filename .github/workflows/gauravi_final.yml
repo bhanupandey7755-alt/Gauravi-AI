@@ -1,24 +1,65 @@
-name: Build Gauravi APK
+name: Build Gauravi App
+
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-python-version: '3.10'
 
       - name: Install dependencies
         run: |
-          sudo apt update
-          sudo apt install -y python3-pip build-essential git python3 python3-dev ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev
-          sudo apt install -y libsqlite3-dev sqlite3 bzip2 libbz2-dev zlib1g-dev libssl-dev libffi-dev libgdbm-dev libncursesw5-dev libreadline-gplv2-dev libtk8.6-dev libdb5.3-dev libexpat1-dev liblzma-dev libffi-dev wget curl
-          pip3 install --user --upgrade buildozer Cython==0.29.33 virtualenv
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            git \
+            python3-dev \
+            ffmpeg \
+            libsdl2-dev \
+            libsdl2-image-dev \
+            libsdl2-mixer-dev \
+            libsdl2-ttf-dev \
+            libportmidi-dev \
+            libswscale-dev \
+            libavformat-dev \
+            libavcodec-dev \
+            zlib1g-dev \
+            libncurses5-dev \
+            libncursesw5-dev \
+            libreadline-dev \
+            libtk8.6-dev \
+            libgdbm-dev \
+            libdb-dev \
+            libsqlite3-dev \
+            tk-dev \
+            libffi-dev \
+            libssl-dev \
+            autoconf \
+            automake \
+            libtool \
+            pkg-config \
+            cmake
+
+      - name: Install Buildozer
+        run: |
+          pip install --upgrade pip
+          pip install buildozer
+          pip install cython==0.29.33
 
       - name: Build with Buildozer
         run: |
-            export PATH=$PATH:$HOME/.local/bin
-            buildozer android debug
- 
+          # यह कमांड आपके ऐप की APK बनाना शुरू करेगा
+          # ध्यान रहे कि आपकी repository में buildozer.spec फाइल होनी चाहिए
+          buildozer android debug
