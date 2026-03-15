@@ -5,13 +5,14 @@ package.domain = org.gauravi
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,ttf
 
-# नया वर्जन ताकि फ्रेश इंस्टॉल हो
-version = 3.0
+# नया वर्जन ताकि फ्रेश इंस्टॉल हो सके
+version = 4.0
 
 icon.filename = %(source.dir)s/logo.png
 presplash.filename = %(source.dir)s/logo.png
 
-requirements = python3, kivy, pyjnius, android
+# यहाँ 'android' जोड़ना बहुत ज़रूरी था
+requirements = python3, kivy, android, pyjnius
 
 android.permissions = INTERNET, RECORD_AUDIO, MODIFY_AUDIO_SETTINGS
 orientation = portrait
