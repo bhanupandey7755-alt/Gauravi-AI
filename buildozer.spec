@@ -5,13 +5,13 @@ package.domain = org.gauravi
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,ttf
 
-# नया वर्जन ताकि फ्रेश इंस्टॉल हो सके
-version = 4.0
+# इसे 6.0 कर दें, ताकि फोन नया अपडेट मान ले
+version = 6.0
 
 icon.filename = %(source.dir)s/logo.png
 presplash.filename = %(source.dir)s/logo.png
 
-# यहाँ 'android' जोड़ना बहुत ज़रूरी था
+# इसमें android, pyjnius होना ज़रूरी है
 requirements = python3, kivy, android, pyjnius
 
 android.permissions = INTERNET, RECORD_AUDIO, MODIFY_AUDIO_SETTINGS
